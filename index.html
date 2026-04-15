@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UWA Business School — Teaching Award Nomination</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --navy: #002147;
+    --navy-light: #0a3060;
+    --cream: #FAF8F3;
+    --text: #1a1a2e;
+    --muted: #6b7280;
+    --border: #e5dfd0;
+    --success: #2d6a4f;
+    --white: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* Header */
+  .header {
+    background: var(--navy);
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 3px solid var(--gold);
+  }
+
+  .header-logo {
+    width: 48px;
+    height: 48px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--navy);
+    font-weight: 600;
+  }
+
+  .header-text h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--white);
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  .header-text p {
+    font-size: 12px;
+    color: var(--gold-light);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* Main */
+  .main {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  .page-title {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .page-title h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    color: var(--navy);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .page-title p {
+    font-size: 15px;
+    color: var(--muted);
+    margin-top: 10px;
+    line-height: 1.6;
+  }
+
+  .divider {
+    width: 60px;
+    height: 3px;
+    background: var(--gold);
+    margin: 16px auto 0;
+    border-radius: 2px;
+  }
+
+  /* Card */
+  .card {
+    background: var(--white);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    padding: 36px;
+    box-shadow: 0 4px 24px rgba(0,33,71,0.06);
+  }
+
+  /* Form */
+  .form-group {
+    margin-bottom: 24px;
+  }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--navy);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  label span.required {
+    color: var(--gold);
+    margin-left: 4px;
+  }
+
+  input[type="text"],
+  textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    background: var(--cream);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+
+  input[type="text"]:focus,
+  textarea:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,168,76,0.12);
+    background: var(--white);
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+    line-height: 1.6;
+  }
+
+  /* Autocomplete */
+  .autocomplete-wrapper {
+    position: relative;
+  }
+
+  .autocomplete-wrapper input {
+    padding-right: 40px;
+  }
+
+  .search-icon {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    pointer-events: none;
+  }
+
+  .suggestions-list {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    background: var(--white);
+    border: 1.5px solid var(--gold);
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0,33,71,0.12);
+    z-index: 100;
+    overflow: hidden;
+    max-height: 240px;
+    overflow-y: auto;
+    display: none;
+  }
+
+  .suggestions-list.show { display: block; }
+
+  .suggestion-item {
+    padding: 12px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .suggestion-item:last-child { border-bottom: none; }
+
+  .suggestion-item:hover,
+  .suggestion-item.active {
+    background: #FDF8EE;
+  }
+
+  .suggestion-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .suggestion-name mark {
+    background: none;
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  .suggestion-unit {
+    font-size: 12px;
+    color: var(--muted);
+    background: var(--cream);
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+
+  .no-results {
+    padding: 16px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .loading-item {
+    padding: 16px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  /* Selected scholar info */
+  .scholar-info {
+    margin-top: 10px;
+    padding: 12px 16px;
+    background: #F0F7F4;
+    border: 1.5px solid #a8d5be;
+    border-radius: 10px;
+    font-size: 14px;
+    color: var(--success);
+    display: none;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .scholar-info.show { display: flex; }
+
+  .scholar-info svg { flex-shrink: 0; }
+
+  /* Submit button */
+  .btn-submit {
+    width: 100%;
+    padding: 15px;
+    background: var(--navy);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    transition: background 0.2s, transform 0.1s;
+    margin-top: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-submit:hover { background: var(--navy-light); }
+  .btn-submit:active { transform: scale(0.99); }
+  .btn-submit:disabled { background: var(--muted); cursor: not-allowed; }
+
+  /* Success message */
+  .success-msg {
+    display: none;
+    text-align: center;
+    padding: 32px 20px;
+  }
+
+  .success-msg.show { display: block; }
+  .form-content.hide { display: none; }
+
+  .success-icon {
+    width: 64px;
+    height: 64px;
+    background: #d1fae5;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+  }
+
+  .success-msg h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+
+  .success-msg p {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .btn-another {
+    margin-top: 20px;
+    padding: 10px 24px;
+    background: transparent;
+    border: 1.5px solid var(--navy);
+    border-radius: 8px;
+    color: var(--navy);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-another:hover {
+    background: var(--navy);
+    color: var(--white);
+  }
+
+  /* Error */
+  .error-msg {
+    font-size: 12px;
+    color: #dc2626;
+    margin-top: 6px;
+    display: none;
+  }
+
+  .error-msg.show { display: block; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 32px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* Scrollbar */
+  .suggestions-list::-webkit-scrollbar { width: 6px; }
+  .suggestions-list::-webkit-scrollbar-track { background: transparent; }
+  .suggestions-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @media (max-width: 480px) {
+    .header { padding: 16px 20px; }
+    .main { padding: 32px 16px 60px; }
+    .card { padding: 24px 20px; }
+    .page-title h2 { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-logo">U</div>
+  <div class="header-text">
+    <h1>UWA Business School</h1>
+    <p>Teaching Excellence Awards 2026</p>
+  </div>
+</header>
+
+<main class="main">
+  <div class="page-title">
+    <h2>Nominate a Lecturer</h2>
+    <p>Recognise outstanding teaching at the Business School.<br>Your nomination takes less than 2 minutes.</p>
+    <div class="divider"></div>
+  </div>
+
+  <div class="card">
+
+    <!-- Form -->
+    <div class="form-content" id="formContent">
+
+      <div class="form-group">
+        <label>Your Name <span class="required">*</span></label>
+        <input type="text" id="nominatorName" placeholder="e.g. Jane Smith" autocomplete="off">
+        <div class="error-msg" id="nominatorError">Please enter your name.</div>
+      </div>
+
+      <div class="form-group">
+        <label>Nominate a Scholar <span class="required">*</span></label>
+        <div class="autocomplete-wrapper">
+          <input
+            type="text"
+            id="scholarSearch"
+            placeholder="Type name to search, e.g. Wei..."
+            autocomplete="off"
+          >
+          <svg class="search-icon" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
+          </svg>
+          <div class="suggestions-list" id="suggestionsList"></div>
+        </div>
+        <div class="scholar-info" id="scholarInfo">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          </svg>
+          <span id="scholarInfoText"></span>
+        </div>
+        <div class="error-msg" id="scholarError">Please select a scholar from the list.</div>
+      </div>
+
+      <div class="form-group">
+        <label>Why are you nominating this scholar? <span class="required">*</span></label>
+        <textarea id="comment" placeholder="Describe what makes this lecturer exceptional — their teaching style, impact on your learning, or specific examples..."></textarea>
+        <div class="error-msg" id="commentError">Please write a comment.</div>
+      </div>
+
+      <button class="btn-submit" id="submitBtn" onclick="submitNomination()">
+        Submit Nomination
+      </button>
+
+    </div>
+
+    <!-- Success -->
+    <div class="success-msg" id="successMsg">
+      <div class="success-icon">
+        <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="#059669" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+        </svg>
+      </div>
+      <h3>Nomination Submitted!</h3>
+      <p>Thank you for recognising great teaching.<br>Your nomination has been recorded successfully.</p>
+      <button class="btn-another" onclick="resetForm()">Submit Another</button>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    UWA Business School · Teaching Excellence Awards 2026
+  </div>
+</main>
+
+<script>
+  // ── Supabase Config ──────────────────────────────────────────
+  const SUPABASE_URL = "https://eoqbysdsmzhbmmuzyyqbn.supabase.co"
+  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvcWJ5c2RzbXpoYm1tdXp5cWJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyNTM2NTgsImV4cCI6MjA5MTgyOTY1OH0.ctEb2y52dhbG8sCqxBYW_88OPA7UOSgufskuQCGT7xo"
+
+  const headers = {
+    "apikey": SUPABASE_KEY,
+    "Authorization": `Bearer ${SUPABASE_KEY}`,
+    "Content-Type": "application/json"
+  }
+
+  // ── State ────────────────────────────────────────────────────
+  let selectedScholar = null
+  let debounceTimer = null
+  let activeIndex = -1
+
+  // ── Autocomplete ─────────────────────────────────────────────
+  const searchInput = document.getElementById('scholarSearch')
+  const suggestionsList = document.getElementById('suggestionsList')
+
+  searchInput.addEventListener('input', (e) => {
+    const query = e.target.value.trim()
+    selectedScholar = null
+    document.getElementById('scholarInfo').classList.remove('show')
+
+    clearTimeout(debounceTimer)
+    if (query.length < 2) {
+      hideSuggestions()
+      return
+    }
+
+    // Show loading
+    suggestionsList.innerHTML = `<div class="loading-item">Searching...</div>`
+    suggestionsList.classList.add('show')
+
+    debounceTimer = setTimeout(() => fetchScholars(query), 300)
+  })
+
+  async function fetchScholars(query) {
+    try {
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/scholars?name=ilike.*${encodeURIComponent(query)}*&select=id,name,unit&limit=6`,
+        { headers }
+      )
+      const data = await res.json()
+      renderSuggestions(data, query)
+    } catch (err) {
+      suggestionsList.innerHTML = `<div class="no-results">Connection error. Please try again.</div>`
+    }
+  }
+
+  function renderSuggestions(scholars, query) {
+    activeIndex = -1
+    if (!scholars || scholars.length === 0) {
+      suggestionsList.innerHTML = `<div class="no-results">No scholars found for "${query}"</div>`
+      return
+    }
+
+    suggestionsList.innerHTML = scholars.map((s, i) => {
+      const highlighted = s.name.replace(
+        new RegExp(`(${query})`, 'gi'),
+        '<mark>$1</mark>'
+      )
+      return `
+        <div class="suggestion-item" data-id="${s.id}" data-name="${s.name}" data-unit="${s.unit}" onmousedown="selectScholar(${s.id}, '${s.name}', '${s.unit}')">
+          <span class="suggestion-name">${highlighted}</span>
+          <span class="suggestion-unit">${s.unit}</span>
+        </div>`
+    }).join('')
+  }
+
+  function selectScholar(id, name, unit) {
+    selectedScholar = { id, name, unit }
+    searchInput.value = name
+    hideSuggestions()
+
+    const infoEl = document.getElementById('scholarInfo')
+    document.getElementById('scholarInfoText').textContent = `${name} · ${unit}`
+    infoEl.classList.add('show')
+    document.getElementById('scholarError').classList.remove('show')
+  }
+
+  function hideSuggestions() {
+    suggestionsList.classList.remove('show')
+    suggestionsList.innerHTML = ''
+    activeIndex = -1
+  }
+
+  // Keyboard navigation
+  searchInput.addEventListener('keydown', (e) => {
+    const items = suggestionsList.querySelectorAll('.suggestion-item')
+    if (!items.length) return
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      activeIndex = Math.min(activeIndex + 1, items.length - 1)
+      updateActive(items)
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      activeIndex = Math.max(activeIndex - 1, 0)
+      updateActive(items)
+    } else if (e.key === 'Enter' && activeIndex >= 0) {
+      e.preventDefault()
+      const item = items[activeIndex]
+      selectScholar(
+        parseInt(item.dataset.id),
+        item.dataset.name,
+        item.dataset.unit
+      )
+    } else if (e.key === 'Escape') {
+      hideSuggestions()
+    }
+  })
+
+  function updateActive(items) {
+    items.forEach((item, i) => {
+      item.classList.toggle('active', i === activeIndex)
+    })
+  }
+
+  // Hide on outside click
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.autocomplete-wrapper')) {
+      hideSuggestions()
+    }
+  })
+
+  // ── Submit ───────────────────────────────────────────────────
+  async function submitNomination() {
+    // Validate
+    let valid = true
+
+    const nominator = document.getElementById('nominatorName').value.trim()
+    if (!nominator) {
+      document.getElementById('nominatorError').classList.add('show')
+      valid = false
+    } else {
+      document.getElementById('nominatorError').classList.remove('show')
+    }
+
+    if (!selectedScholar) {
+      document.getElementById('scholarError').classList.add('show')
+      valid = false
+    } else {
+      document.getElementById('scholarError').classList.remove('show')
+    }
+
+    const comment = document.getElementById('comment').value.trim()
+    if (!comment) {
+      document.getElementById('commentError').classList.add('show')
+      valid = false
+    } else {
+      document.getElementById('commentError').classList.remove('show')
+    }
+
+    if (!valid) return
+
+    // Submit
+    const btn = document.getElementById('submitBtn')
+    btn.disabled = true
+    btn.textContent = 'Submitting...'
+
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/nominations`, {
+        method: 'POST',
+        headers: { ...headers, "Prefer": "return=minimal" },
+        body: JSON.stringify({
+          scholar_id: selectedScholar.id,
+          scholar_name: selectedScholar.name,
+          nominator_name: nominator,
+          comment: comment
+        })
+      })
+
+      if (res.ok || res.status === 201) {
+        document.getElementById('formContent').classList.add('hide')
+        document.getElementById('successMsg').classList.add('show')
+      } else {
+        throw new Error('Submission failed')
+      }
+    } catch (err) {
+      alert('Something went wrong. Please try again.')
+    } finally {
+      btn.disabled = false
+      btn.textContent = 'Submit Nomination'
+    }
+  }
+
+  // ── Reset ────────────────────────────────────────────────────
+  function resetForm() {
+    document.getElementById('nominatorName').value = ''
+    document.getElementById('scholarSearch').value = ''
+    document.getElementById('comment').value = ''
+    selectedScholar = null
+    document.getElementById('scholarInfo').classList.remove('show')
+    document.getElementById('formContent').classList.remove('hide')
+    document.getElementById('successMsg').classList.remove('show')
+  }
+</script>
+
+</body>
+</html>
